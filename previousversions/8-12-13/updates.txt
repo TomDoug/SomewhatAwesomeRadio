@@ -1,0 +1,45 @@
+T6/13:	Updated the music server to use flask. Going to localhost/ gives a list of all files in the Music folder. 
+	localhost/play/<songtitle> plays a song. localhost/songinfo/<songtitle> gives you the songs info. localhost/pause pauses 
+	and localhost/stop stops the music. this still needs to be implemented on the client side.
+
+
+
+
+M6/13:	Tabed previous update so I could read it better. Also had some ideas for the physical radio. How do you feel about a wood
+	faceplate for the flat part, and leather with studs around the curved part? Eliminates the need to bend wood/metal and
+	may look nice. Thoughts?
+
+T6/13:	That sounds like it would look really good.
+
+M6/13:	Pexpect does not work with Windows. Might try to get around that later, if not I'll just have to take a look at it when I get
+	home. Looks good though!
+
+T6/13:	Yea ik, which is really annoying because pexpect is pretty cool. I think i am going to try and create a seperare module that
+	does the "bouncing" animation so that it will be easier to reuse.
+
+M6/17:	Bouncing animation is cool, would love to reuse it. Weather is finished for the most part, left and right scrolls between
+	days. Do you think anything needs to be added to it?
+	-Also made small change to sports screen, dim on scores instead of completely black. Again, not sure about this change.
+	-Rounded corners on all of the main screen icons
+	-Began to implement pong class. Shows current swagmaster and RETURN directs to stats.
+
+T6/17: 	The weather looks good. I think after we get the animation working we should make it so you can click the day for further description.
+	So far with the animaton helper i have it giving us the main image in the center and bouncing it. I still need to work on the animated scrolling.
+	The sports part also looks good.
+	
+	This is how i am thinking about doing the animation thing.
+	-There will be a method that takes the screen, left image, main image, right image. This method will paint the three images to the screen.
+	-There will be an animate method that will take a direction and a new image. It will do the animated change.
+	-The rest, including currentSelection and selection handling will be part of the main program.
+	How does this sound?
+
+M6/17:	I like the more weather info idea. The way you want to do the animation makes the most sense I think. Should keep things neat and simple!
+
+T8/12:  -As of right now i have gui3.py running the bouncing animation from the MenuAnimaton module. Next step is getting the change
+	animation to work with it then MenuAnimation.py should be easily reuseable in the other screens for a more consistant
+	look and feel. Also when i am finished i will create something explaining how the MenuAnimation module works/should be implemented.
+
+	-By golly i think ive done it! All of the animations are now running from the MenuAnimation.py class. now i will try to 
+	write up a little thing on how to use it (that is if i can figure out how to use it)
+
+	-Ok thats done too. MenuAnimationHowTo.txt

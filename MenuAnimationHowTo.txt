@@ -1,0 +1,79 @@
+this should be initalized in the main menu and then given to each class in order to
+reduce calculations
+
+Methods:
+	__init__(self, calcVars)
+		this initalizes some variables. it takes an instance of the CalcVars class
+	
+	paintImages(self, screen, imageList, currentSelection)
+		-this sould be called when the tiles are not moving, this gives the bouncing
+		effect.
+		-the variables are self explanitory
+	
+	animateChange(self, screen, imageList, previousSelection, direction, changeFrameCounter)
+		this is called when the tiles are moving, it creates the sliding effect.
+		-direction is 0 for key left and 1 for key right
+		-change frame counter should be an self. variable in the pages class.
+			it starts at 1 and goes to 15-further explanation later
+	timeIncriment(self)
+		this needs to be called every time paintImages is called
+		
+How to impliment it:
+	Each screen should get a reference to the animation generator(this still needs to be changed)
+	and it will need these variables declares in the init:
+		self.LEFT = 0
+		self.RIGHT = 1
+		self.whichDirection = 0
+		
+		self.isChanging = False
+		self.changeFrameCounter = 1.0
+	
+	The rest of the code will take place in the main loop.
+	Begin your main loop with all of the normal button handling etc.
+	when you get to K_LEFT and K_RIGHT use this code.
+		if event.key == K_RIGHT:
+			if not self.isChanging: #this can be used on any button to disable it while the sliding animation is happening
+				self.whichDirection = self.RIGHT #remembers which direction its going
+				self.previousSelection = self.currentSelection #remembers what it was on
+				self.isChanging = True #it be like "we changin yo, calm yo titties"
+				if self.currentSelection < len(self.icons)-1: #changes the selection variable
+					self.currentSelection += 1
+				else:
+					self.currentSelection = 0
+					
+		#same as before but opposite
+		if event.key == K_LEFT:
+			if not self.isChanging:
+				self.whichDirection = self.LEFT
+				self.isChanging = True
+				self.previousSelection = self.currentSelection
+				if self.currentSelection > 0:
+					self.currentSelection -= 1
+				else:
+					self.currentSelection = len(self.icons)-1
+		
+	Now is a good time to set your background (you want to be out of the "for event
+	in pygame.event.get()" loop now:
+				screen.blit(self.background,(0,self.animGen.calcVars.mainHeightOrigin))
+	self.animGen.calcVars.mainHeightOrigin is the point on the left of the screen where
+	the status bar ends and the background begins.
+	
+	Now for the fun part. This is all you need to do for the animation:
+		if not self.isChanging:#should we slide or not?
+				self.animGen.paintImages(screen, self.icons, self.currentSelection)#bouncing
+			else:#we should slide
+				self.animGen.animateChange(screen, self.icons, self.previousSelection, self.whichDirection, self.changeFrameCounter)#lets draw the slide
+				
+				if self.changeFrameCounter < self.animGen.calcVars.numberOfChangeFrames: #are we done sliding?
+					self.changeFrameCounter += 1 #not yet keep going
+				else:#ok now we are done
+					self.changeFrameCounter = 1 #reset for next time
+					self.isChanging = False #now stop that rediculous sliding
+					
+	ONE LAST SUPER IMPORTANT STEP THAT YOU WILL FORGET:
+		pygame.display.flip()
+		also update the status bar
+		self.statusBar.update()
+		
+	any questions?
+		
