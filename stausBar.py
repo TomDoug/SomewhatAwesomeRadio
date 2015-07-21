@@ -54,4 +54,4 @@ class StatusBar:
 		self.screen.blit(self.subScreen, (0,0))
 		
 	
-	
+	#TODO: Make a lower status bar that keeps track of the current song position

@@ -2,12 +2,11 @@ import pygame, sys, os, UDPserver
 import posixpath
 import SportsMain, WeatherMain, MusicMain, PongMain, MessagesMain
 import CalcVariables, MenuAnimation
+import MusicPlayer
 from stausBar import *
 from pygame.locals import *
 
 #Settings variables:
-
-desktop_ip_address = "127.0.0.1" #Use "127.0.0.1" when running the server ang gui on the same computer
 
 
 
@@ -31,15 +30,17 @@ class MainMenu:
 		
 		self.clock = pygame.time.Clock()
 		self.loadIcons()
-						
-		self.background = pygame.transform.scale(pygame.image.load(os.path.join('imgs', 'mainbackground.jpg')), (width, self.animGen.calcVars.mainHeight))
+		
+		self.mainScreenOrigin = ((0,screen.get_height()/10))
+		self.mainScreenSize = ((screen.get_width(), screen.get_height() - (screen.get_height()/10)))				
+		self.background = pygame.transform.scale(pygame.image.load(os.path.join('imgs', 'mainbackground.jpg')), (self.mainScreenSize))
+
 		
 		self.isChanging = False
 		self.changeFrameCounter = 1.0
 		self.changeCounterIncreasing = True
 		
 		self.otherScreens = [WeatherMain.WeatherPage(screen, self.clock, self.statusBar), MusicMain.MusicPage(screen, self.clock, self.statusBar), SportsMain.SportsPage(screen, self.clock, self.statusBar, self.animGen), PongMain.PongPage(screen, self.clock, self.statusBar), MessagesMain.MessagesPage(screen, self.clock, self.statusBar, self.animGen)]
-		
 		self.mainLoop()
 		
 	def loadIcons(self):
@@ -55,6 +56,7 @@ class MainMenu:
 	def mainLoop(self):
 		while 1:
 			self.clock.tick(30)
+			
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					sys.exit()
@@ -86,7 +88,7 @@ class MainMenu:
 					if event.key == K_RETURN:
 						self.processSelection()
 			
-			screen.blit(self.background,(0,self.animGen.calcVars.mainHeightOrigin))
+			screen.blit(self.background,(self.mainScreenOrigin))
 			if not self.isChanging:
 				self.animGen.paintImages(screen, self.icons, self.currentSelection)
 			else:
@@ -101,6 +103,7 @@ class MainMenu:
 			
 if __name__ == "__main__":
 	pygame.init()
+
 	s = UDPserver.server()
 	s.daemon = True
 	s.start()
